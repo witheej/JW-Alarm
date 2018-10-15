@@ -28,12 +28,12 @@ namespace JW.Alarm.Services.Uwp
             await base.Delete(alarmId);
         }
 
-        public override async Task Update(int alarmScheduleId, AlarmSchedule alarmSchedule)
+        public override async Task Update(AlarmSchedule alarmSchedule)
         {
-            removeNotification(alarmScheduleId.ToString());
+            removeNotification(alarmSchedule.Id.ToString());
             createNotification(alarmSchedule);
 
-            await base.Update(alarmScheduleId, alarmSchedule);
+            await base.Update(alarmSchedule);
         }
 
         private void createNotification(AlarmSchedule alarmSchedule)
