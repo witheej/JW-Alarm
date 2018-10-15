@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Jw.Alarm.Models\JW.Alarm.Models.csproj" />
+    <ProjectReference Include="..\JW.Alarm.Shared\JW.Alarm.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
