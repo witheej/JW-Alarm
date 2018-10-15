@@ -5,6 +5,7 @@
     using JW.Alarm.Services.Uwp;
     using JW.Alarm.Services.Uwp.Storage;
     using JW.Alarm.Services.Uwp.Tasks;
+    using JW.Alarm.Services.UWP;
     using System.Net.Http;
 
     public static class IocSetup
@@ -13,6 +14,8 @@
         public static void Initialize(ContainerBuilder containerBuilder)
         {
             containerBuilder.RegisterType<UwpAlarmService>().As<IAlarmService>();
+            containerBuilder.RegisterType<UwpMediaPlayService>().As<IMediaPlayService>();
+
             containerBuilder.RegisterType<AlarmTask>();
             containerBuilder.RegisterType<SchedulerTask>();
             containerBuilder.RegisterType<HttpClientHandler>();
