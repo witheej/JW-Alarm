@@ -1,6 +1,7 @@
 ﻿namespace JW.Alarm.Core.Uwp
 {
     using Autofac;
+    using JW.Alarm.Core.UWP.ViewModels;
 
     public static class IocSetup
     {
@@ -10,6 +11,8 @@
             var containerBuilder = new ContainerBuilder();
             Services.IocSetup.Initialize(containerBuilder);
             Services.Uwp.IocSetup.Initialize(containerBuilder);
+
+            containerBuilder.RegisterType<MainViewModel>();
 
             var container = containerBuilder.Build();
             SetContainer(container);

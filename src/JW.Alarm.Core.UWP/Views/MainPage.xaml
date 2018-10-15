@@ -1,0 +1,55 @@
+﻿<Page
+    x:Class="JW.Alarm.Core.Uwp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:JW.Alarm.Core.Uwp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:JW.Alarm.Core.UWP.Views.Converters"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <converters:ClockIconConverter x:Key="clockIconConverter" />
+        <converters:DayColorConverter x:Key="dayStatusColorConverter" />
+    </Page.Resources>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <ListView x:Name="SchedulesListView"
+          ItemsSource="{x:Bind MainViewModel.Schedules}" >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="6*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+                            <Button>
+                                <Button.Template>
+                                    <ControlTemplate>
+                                        <Image Source="{Binding IsEnabled, Converter={StaticResource clockIconConverter} }" />
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                            <TextBlock Name="TextBlock_Hour" Text="{Binding Hour}" />
+                            <TextBlock Text=":"  />
+                            <TextBlock Name="TextBlock_Minute"  Text="{Binding Minute}"/>
+                            <TextBlock Name="TextBlock_Merridien"  Text="{Binding Meridien}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <!--<TextBlock Name="TextBlock_Sunday" Foreground="{Binding DaysOfWeek, Converter={ StaticResource dayStatusColorConverter}, ConverterParameter = S}" Text="S" />
+                                <TextBlock Name="TextBlock_Monday" Foreground="{Binding DaysOfWeek, Converter={ StaticResource dayStatusColorConverter}, ConverterParameter = M}" Text="M" />
+                                <TextBlock Name="TextBlock_Tuesday" Foreground="{Binding DaysOfWeek, Converter={ StaticResource dayStatusColorConverter}, ConverterParameter = T}" Text="T"/>
+                                <TextBlock Name="TextBlock_Wednesday" Foreground="{Binding DaysOfWeek, Converter={ StaticResource dayStatusColorConverter}, ConverterParameter = W}" Text="W"/>
+                                <TextBlock Name="TextBlock_Thursday" Foreground="{Binding DaysOfWeek, Converter={ StaticResource dayStatusColorConverter}, ConverterParameter = T}" Text="T"/>
+                                <TextBlock Name="TextBlock_Friday" Foreground="{Binding DaysOfWeek, Converter={ StaticResource dayStatusColorConverter}, ConverterParameter = F}" Text="F"/>
+                                <TextBlock Name="TextBlock_Saturday" Foreground="{Binding DaysOfWeek, Converter={ StaticResource dayStatusColorConverter}, ConverterParameter = S}" Text="S"/>-->
+                            </StackPanel>
+                            <TextBlock Name="TextBlock_Description"  Text="{Binding Description}"/>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Autofac;
+using JW.Alarm.Core.UWP.ViewModels;
+using JW.Alarm.Services.Contracts;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,6 +28,17 @@ namespace JW.Alarm.Core.Uwp
         public MainPage()
         {
             this.InitializeComponent();
+            using (var scope = IocSetup.Container.BeginLifetimeScope())
+            {
+                var alarmService = scope.Resolve<IAlarmService>();
+                MainViewModel = new MainViewModel(alarmService);
+            }   
         }
+
+        /// <summary>
+        /// Gets the app-wide ViewModel instance.
+        /// </summary>
+        public MainViewModel MainViewModel { get; set; }
+
     }
 }
