@@ -18,6 +18,7 @@
             containerBuilder.RegisterType<SchedulerTask>();
             containerBuilder.RegisterType<HttpClientHandler>();
             containerBuilder.RegisterType<UwpStorageService>().As<IStorageService>();
+            containerBuilder.RegisterType<UwpPopUpService>().As<IPopUpService>();
         }
 
         public static void SetContainer(IContainer iocContainer)

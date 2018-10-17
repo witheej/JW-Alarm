@@ -115,6 +115,7 @@
     <Compile Include="Tasks\AlarmTask.cs" />
     <Compile Include="Tasks\SchedulerTask.cs" />
     <Compile Include="Threading\ThreadService.cs" />
+    <Compile Include="UI\PopUpService.cs" />
     <EmbeddedResource Include="Properties\JW.Alarm.Services.UWP.rd.xml" />
   </ItemGroup>
   <ItemGroup>
