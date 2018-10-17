@@ -5,18 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using JW.Alarm.Services.Contracts;
-using Microsoft.Toolkit.Uwp.Helpers;
 
-namespace JW.Alarm.Core.UWP.ViewModels
+namespace JW.Alarm.ViewModels
 {
 
     public class MainViewModel : BindableBase
     {
         private IScheduleService scheduleService;
-     
-        public MainViewModel(IScheduleService scheduleService)
+        private IThreadService threadService;
+
+        public MainViewModel(IScheduleService scheduleService, IThreadService threadService)
         {
             this.scheduleService = scheduleService;
+            this.threadService = threadService;
+
             Task.Run(GetScheduleListAsync);
         }
 
@@ -39,10 +41,10 @@ namespace JW.Alarm.Core.UWP.ViewModels
             set => Set(ref isLoading, value);
         }
 
-      
+
         public async Task GetScheduleListAsync()
         {
-            await DispatcherHelper.ExecuteOnUIThreadAsync(() => IsLoading = true);
+            await threadService.RunOnUIThread(()=> IsLoading = true);
 
             var schedules = await scheduleService.Schedules;
             if (schedules == null)
@@ -50,7 +52,7 @@ namespace JW.Alarm.Core.UWP.ViewModels
                 return;
             }
 
-            await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+            await threadService.RunOnUIThread(() =>
             {
                 Schedules.Clear();
                 foreach (var schedule in schedules)

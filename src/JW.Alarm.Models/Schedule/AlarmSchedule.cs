@@ -24,7 +24,7 @@ namespace JW.Alarm.Models
         public Meridien Meridien => Hour < 12 ? Meridien.AM : Meridien.PM;
 
         public AlarmMusic Music { get; set; }
-        public AlarmAudio Audio { get; set; }
+        public BibleAudio Bible { get; set; }
 
         public string Key { get; set; }
 

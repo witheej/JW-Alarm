@@ -109,11 +109,12 @@
     <Compile Include="Helpers\BootstrapHelper.cs" />
     <Compile Include="IocSetup.cs" />
     <Compile Include="Media\MediaPlayService.cs" />
-    <Compile Include="Scheduler\AlarmSerivice.cs" />
+    <Compile Include="Scheduler\ScheduleSerivice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\StorageService.cs" />
     <Compile Include="Tasks\AlarmTask.cs" />
     <Compile Include="Tasks\SchedulerTask.cs" />
+    <Compile Include="Threading\ThreadService.cs" />
     <EmbeddedResource Include="Properties\JW.Alarm.Services.UWP.rd.xml" />
   </ItemGroup>
   <ItemGroup>

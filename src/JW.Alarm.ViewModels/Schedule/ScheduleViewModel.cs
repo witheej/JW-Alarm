@@ -3,7 +3,7 @@ using JW.Alarm.Services.Contracts;
 using System;
 using System.Threading.Tasks;
 
-namespace JW.Alarm.Core.UWP.ViewModels
+namespace JW.Alarm.ViewModels
 {
 
     public class ScheduleViewModel : BindableBase
@@ -116,14 +116,14 @@ namespace JW.Alarm.Core.UWP.ViewModels
             }
         }
 
-        public AlarmAudio Audio
+        public BibleAudio Bible
         {
-            get => Model.Audio;
+            get => Model.Bible;
             set
             {
-                if (value != Model.Audio)
+                if (value != Model.Bible)
                 {
-                    Model.Audio = value;
+                    Model.Bible = value;
                     IsModified = true;
                     OnPropertyChanged();
                 }

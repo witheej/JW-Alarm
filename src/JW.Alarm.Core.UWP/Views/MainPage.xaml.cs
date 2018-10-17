@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using JW.Alarm.Core.UWP.ViewModels;
+using JW.Alarm.ViewModels;
 using Windows.UI.Xaml.Controls;
 
 

@@ -7,7 +7,7 @@ using Windows.Storage;
 
 namespace JW.Alarm.Services.Uwp
 {
-    public class StorageService : IStorageService
+    public class UwpStorageService : IStorageService
     {
         public string StorageRoot => ApplicationData.Current.LocalFolder.Path;
 

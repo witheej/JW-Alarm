@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JW.Alarm.Core.UWP.ViewModels
+namespace JW.Alarm.ViewModels
 {
     public abstract class BindableBase : INotifyPropertyChanged
     {
