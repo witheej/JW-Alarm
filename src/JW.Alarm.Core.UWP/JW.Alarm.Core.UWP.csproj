@@ -163,9 +163,9 @@
       <Project>{385dd86e-59c5-4f19-9043-4461a7057d01}</Project>
       <Name>JW.Alarm.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\JW.Alarm.Shared\JW.Alarm.Shared.csproj">
+    <ProjectReference Include="..\JW.Alarm.Common\JW.Alarm.Common.csproj">
       <Project>{b888fbe1-6448-4355-8681-8bcede70c1a1}</Project>
-      <Name>JW.Alarm.Shared</Name>
+      <Name>JW.Alarm.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

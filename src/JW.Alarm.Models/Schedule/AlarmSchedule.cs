@@ -32,7 +32,7 @@ namespace JW.Alarm.Models
 
         public string CronExpression => getCronExpression();
 
-        public PlayItem CurrentPlayItem { get; set; }
+        public PlayType CurrentPlayItem { get; set; }
 
         public DateTimeOffset NextFireDate()
         {

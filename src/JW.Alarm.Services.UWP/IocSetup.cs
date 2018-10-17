@@ -2,8 +2,6 @@
 {
     using Autofac;
     using JW.Alarm.Services.Contracts;
-    using JW.Alarm.Services.Uwp;
-    using JW.Alarm.Services.Uwp.Storage;
     using JW.Alarm.Services.Uwp.Tasks;
     using JW.Alarm.Services.UWP;
     using System.Net.Http;
@@ -13,7 +11,7 @@
         internal static IContainer Container;
         public static void Initialize(ContainerBuilder containerBuilder)
         {
-            containerBuilder.RegisterType<UwpAlarmService>().As<IAlarmService>();
+            containerBuilder.RegisterType<UwpAlarmService>().As<IScheduleService>();
             containerBuilder.RegisterType<UwpMediaPlayService>().As<IMediaPlayService>();
 
             containerBuilder.RegisterType<AlarmTask>();

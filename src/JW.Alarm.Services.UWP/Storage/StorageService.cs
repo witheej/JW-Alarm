@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace JW.Alarm.Services.Uwp.Storage
+namespace JW.Alarm.Services.Uwp
 {
     public class StorageService : IStorageService
     {

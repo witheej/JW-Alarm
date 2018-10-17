@@ -10,8 +10,8 @@ namespace JW.Alarm.Services.Contracts
 
         Task<string> ReadFile(string path);
         Task CopyResourceFile(string resourceFilePath, string destinationDirectoryPath, string destinationFileName);
-        Task SaveFile(string directoryPath, string name, string contents);
-        Task SaveFile(string directoryPath, string name, byte[] contents);
+        Task SaveFile(string directoryPath, string fileName, string contents);
+        Task SaveFile(string directoryPath, string fileName, byte[] contents);
         Task DeleteFile(string path);
     }
 }

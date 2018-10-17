@@ -8,8 +8,8 @@ namespace JW.Alarm.Core.UWP.ViewModels
 
     public class ScheduleViewModel : BindableBase
     {
-        IAlarmService scheduleService;
-        public ScheduleViewModel(IAlarmService scheduleService, AlarmSchedule model = null)
+        IScheduleService scheduleService;
+        public ScheduleViewModel(IScheduleService scheduleService, AlarmSchedule model = null)
         {
             this.scheduleService = scheduleService;
             Model = model ?? new AlarmSchedule();

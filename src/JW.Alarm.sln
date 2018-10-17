@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JW.Alarm.Shared", "JW.Alarm.Shared\JW.Alarm.Shared.csproj", "{B888FBE1-6448-4355-8681-8BCEDE70C1A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JW.Alarm.Common", "JW.Alarm.Common\JW.Alarm.Common.csproj", "{B888FBE1-6448-4355-8681-8BCEDE70C1A1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JW.Alarm.Models", "Jw.Alarm.Models\JW.Alarm.Models.csproj", "{55929F15-CAA6-4DBF-A659-3DC315EE5237}"
 EndProject

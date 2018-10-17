@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\JW.Alarm.Common\JW.Alarm.Common.csproj" />
     <ProjectReference Include="..\Jw.Alarm.Models\JW.Alarm.Models.csproj" />
-    <ProjectReference Include="..\JW.Alarm.Shared\JW.Alarm.Shared.csproj" />
   </ItemGroup>
 
 </Project>

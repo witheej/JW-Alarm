@@ -12,7 +12,7 @@
             Services.IocSetup.Initialize(containerBuilder);
             Services.Uwp.IocSetup.Initialize(containerBuilder);
 
-            containerBuilder.RegisterType<MainViewModel>();
+            containerBuilder.RegisterType<MainViewModel>().SingleInstance();
 
             var container = containerBuilder.Build();
             SetContainer(container);

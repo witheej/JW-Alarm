@@ -1,6 +1,5 @@
 ﻿using JW.Alarm.Models;
 using JW.Alarm.Services.Contracts;
-using JW.Alarm.Services.Scheduler;
 using Microsoft.Toolkit.Uwp.Notifications;
 using System;
 using System.Linq;
@@ -9,38 +8,38 @@ using Windows.UI.Notifications;
 
 namespace JW.Alarm.Services.Uwp
 {
-    public class UwpAlarmService : AlarmService
+    public class UwpAlarmService : ScheduleService
     {
         public UwpAlarmService(IStorageService storageService)
             : base(storageService)
         {
         }
 
-        public override async Task Create(AlarmSchedule alarmSchedule)
+        public override async Task Create(AlarmSchedule schedule)
         {
-            createNotification(alarmSchedule);
-            await base.Create(alarmSchedule);
+            createNotification(schedule);
+            await base.Create(schedule);
         }
 
-        public override async Task Delete(int alarmId)
+        public override async Task Delete(int scheduleId)
         {
-            removeNotification(alarmId.ToString());
-            await base.Delete(alarmId);
+            removeNotification(scheduleId.ToString());
+            await base.Delete(scheduleId);
         }
 
-        public override async Task Update(AlarmSchedule alarmSchedule)
+        public override async Task Update(AlarmSchedule schedule)
         {
-            removeNotification(alarmSchedule.Id.ToString());
-            createNotification(alarmSchedule);
+            removeNotification(schedule.Id.ToString());
+            createNotification(schedule);
 
-            await base.Update(alarmSchedule);
+            await base.Update(schedule);
         }
 
-        private void createNotification(AlarmSchedule alarmSchedule)
+        private void createNotification(AlarmSchedule schedule)
         {
             var notifier = ToastNotificationManager.CreateToastNotifier();
 
-            var scheduledNotification = generateAlarmNotification(alarmSchedule, alarmSchedule.NextFireDate());
+            var scheduledNotification = generateAlarmNotification(schedule, schedule.NextFireDate());
             notifier.AddToSchedule(scheduledNotification);
         }
 

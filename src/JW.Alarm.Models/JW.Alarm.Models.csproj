@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\JW.Alarm.Shared\JW.Alarm.Shared.csproj" />
+    <ProjectReference Include="..\JW.Alarm.Common\JW.Alarm.Common.csproj" />
   </ItemGroup>
 
 </Project>

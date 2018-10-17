@@ -12,15 +12,14 @@ namespace JW.Alarm.Core.UWP.ViewModels
 
     public class MainViewModel : BindableBase
     {
-        private IAlarmService scheduleService;
+        private IScheduleService scheduleService;
      
-        public MainViewModel(IAlarmService scheduleService)
+        public MainViewModel(IScheduleService scheduleService)
         {
             this.scheduleService = scheduleService;
             Task.Run(GetScheduleListAsync);
         }
 
-   
         public ObservableCollection<ScheduleViewModel> Schedules { get; }
             = new ObservableCollection<ScheduleViewModel>();
 

@@ -1,7 +1,5 @@
 ﻿using Autofac;
 using JW.Alarm.Services.Contracts;
-using JW.Alarm.Services.Media;
-using JW.Alarm.Services.Scheduler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +14,10 @@ namespace JW.Alarm.Services.Uwp.Tasks
 {
     public class AlarmTask
     {
-        private IAlarmService alarmService;
+        private IScheduleService alarmService;
         private MediaLookUpService mediaLookUpService;
 
-        public AlarmTask(IAlarmService alarmService, MediaLookUpService mediaLookUpService)
+        public AlarmTask(IScheduleService alarmService, MediaLookUpService mediaLookUpService)
         {
             this.alarmService = alarmService;
             this.mediaLookUpService = mediaLookUpService;

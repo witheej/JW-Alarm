@@ -1,5 +1,4 @@
 ﻿using JW.Alarm.Models;
-using JW.Alarm.Models.Media;
 using JW.Alarm.Services.Contracts;
 using System;
 using System.Collections.Generic;
@@ -7,52 +6,52 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JW.Alarm.Services.Media
+namespace JW.Alarm.Services
 {
     public abstract class MediaPlayService : IMediaPlayService
     {
-        private IAlarmService scheduleService;
+        private IScheduleService scheduleService;
         private IMediaService mediaService;
 
-        public MediaPlayService(IAlarmService scheduleService, IMediaService mediaService)
+        public MediaPlayService(IScheduleService scheduleService, IMediaService mediaService)
         {
             this.scheduleService = scheduleService;
             this.mediaService = mediaService;
         }
 
-        public abstract Task Play(int alarmId);
+        public abstract Task Play(int scheduleId);
 
-        public async Task SetNextItemToPlay(int alarmId)
+        public async Task SetNextItemToPlay(int scheduleId)
         {
-            var alarm = (await scheduleService.Schedules)[alarmId];
+            var alarm = (await scheduleService.Schedules)[scheduleId];
 
             switch (alarm.CurrentPlayItem)
             {
-                case PlayItem.Music:
+                case PlayType.Music:
                     await setNextBibleChapter(alarm, true);
                     break;
-                case PlayItem.Bible:
+                case PlayType.Audio:
                     await setNextBibleChapter(alarm);
                     break;
             }
 
         }
 
-        private async Task setNextBibleChapter(AlarmSchedule alarm, bool switchingPublication = false)
+        private async Task setNextBibleChapter(AlarmSchedule schedule, bool switchingPublication = false)
         {
             if (switchingPublication)
             {
-                alarm.CurrentPlayItem = PlayItem.Bible;
-                await scheduleService.Update(alarm);
+                schedule.CurrentPlayItem = PlayType.Audio;
+                await scheduleService.Update(schedule);
                 return;
             }
 
-            var bible = alarm.Audio as BibleAudio;
+            var bible = schedule.Audio as BibleAudio;
             var chapters = await mediaService.GetBibleChapters(bible.LanguageCode, bible.VersionCode, bible.BookNumber);
             if (bible.ChapterNumber < chapters.Count)
             {
                 bible.ChapterNumber++;
-                await scheduleService.Update(alarm);
+                await scheduleService.Update(schedule);
                 return;
             }
 
@@ -62,30 +61,30 @@ namespace JW.Alarm.Services.Media
             var nextBook = books.Skip((books.IndexOf(currentBook) + 1) % books.Count).First();
 
             bible.BookNumber = nextBook.BookNumber;
-            await scheduleService.Update(alarm);
+            await scheduleService.Update(schedule);
             return;
 
 
         }
 
-        public async Task UpdatePlayedSeconds(AlarmSchedule alarm, int second)
+        public async Task UpdatePlayedSeconds(AlarmSchedule schedule, int second)
         {
-            switch (alarm.CurrentPlayItem)
+            switch (schedule.CurrentPlayItem)
             {
-                case PlayItem.Music:
+                case PlayType.Music:
                     break;
-                case PlayItem.Bible:
-                    (alarm.Audio as BibleAudio).Second = second;
-                    await scheduleService.Update(alarm);
+                case PlayType.Audio:
+                    (schedule.Audio as BibleAudio).Second = second;
+                    await scheduleService.Update(schedule);
                     break;
             }
         }
 
-        public async Task<CurrentlyPlaying> NextUrlToPlay(int alarmId)
+        public async Task<CurrentlyPlaying> NextUrlToPlay(int scheduleId)
         {
-            var schedule = (await scheduleService.Schedules)[alarmId];
+            var schedule = (await scheduleService.Schedules)[scheduleId];
 
-            if (schedule.CurrentPlayItem == PlayItem.Music)
+            if (schedule.CurrentPlayItem == PlayType.Music)
             {
                 return await nextMusicUrlToPlay(schedule);
             }
@@ -129,9 +128,9 @@ namespace JW.Alarm.Services.Media
             return null;
         }
 
-        public async virtual Task Stop(AlarmSchedule alarmSchedule)
+        public async virtual Task Stop(AlarmSchedule schedule)
         {
-            await scheduleService.Update(alarmSchedule);
+            await scheduleService.Update(schedule);
         }
     }
 }

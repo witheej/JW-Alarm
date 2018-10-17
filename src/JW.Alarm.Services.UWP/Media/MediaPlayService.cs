@@ -1,11 +1,7 @@
 ﻿using JW.Alarm.Models;
-using JW.Alarm.Models.Media;
 using JW.Alarm.Services.Contracts;
-using JW.Alarm.Services.Media;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Media.Core;
 using Windows.Media.Playback;
@@ -19,14 +15,14 @@ namespace JW.Alarm.Services.UWP
         private Dictionary<int, MediaPlayer> alarmToMediaPlayersMap = new Dictionary<int, MediaPlayer>();
         private Dictionary<MediaPlayer, int> mediaPlayersToAlarmMap = new Dictionary<MediaPlayer, int>();
 
-        public UwpMediaPlayService(IAlarmService scheduleService, IMediaService mediaService)
+        public UwpMediaPlayService(IScheduleService scheduleService, IMediaService mediaService)
             : base(scheduleService, mediaService)
         {
         }
 
-        public override async Task Play(int alarmId)
+        public override async Task Play(int scheduleId)
         {
-            var nextPlayItem = await NextUrlToPlay(alarmId);
+            var nextPlayItem = await NextUrlToPlay(scheduleId);
 
             var mediaPlayer = new MediaPlayer();
             mediaPlayer.Source = MediaSource.CreateFromUri(new Uri(nextPlayItem.Url));
@@ -34,8 +30,8 @@ namespace JW.Alarm.Services.UWP
             mediaPlayer.PlaybackSession.BufferingEnded += onTrackEnd;
             mediaPlayer.Play();
 
-            alarmToMediaPlayersMap.Add(alarmId, mediaPlayer);
-            mediaPlayersToAlarmMap.Add(mediaPlayer, alarmId);
+            alarmToMediaPlayersMap.Add(scheduleId, mediaPlayer);
+            mediaPlayersToAlarmMap.Add(mediaPlayer, scheduleId);
         }
 
         //move to next track on track end
@@ -43,11 +39,11 @@ namespace JW.Alarm.Services.UWP
         {
             var mediaPlayer = sender.MediaPlayer;
 
-            var alarmId = mediaPlayersToAlarmMap[mediaPlayer];
+            var scheduleId = mediaPlayersToAlarmMap[mediaPlayer];
            
-            SetNextItemToPlay(alarmId).Wait();
+            SetNextItemToPlay(scheduleId).Wait();
 
-            var nextPlayItem = await NextUrlToPlay(alarmId);
+            var nextPlayItem = await NextUrlToPlay(scheduleId);
 
             mediaPlayer.Source = MediaSource.CreateFromUri(new Uri(nextPlayItem.Url));
             mediaPlayer.PlaybackSession.Position = TimeSpan.FromSeconds(nextPlayItem.Second);
@@ -55,14 +51,14 @@ namespace JW.Alarm.Services.UWP
         }
 
 
-        public override async Task Stop(AlarmSchedule alarmSchedule)
+        public override async Task Stop(AlarmSchedule schedule)
         {
-            var mediaPlayer = alarmToMediaPlayersMap[alarmSchedule.Id];
+            var mediaPlayer = alarmToMediaPlayersMap[schedule.Id];
             var second = mediaPlayer.PlaybackSession.Position.TotalSeconds;
-            await UpdatePlayedSeconds(alarmSchedule, (int)second < 0 ? 0 : (int)second);
+            await UpdatePlayedSeconds(schedule, (int)second < 0 ? 0 : (int)second);
             mediaPlayer.Dispose();
 
-            await base.Stop(alarmSchedule);
+            await base.Stop(schedule);
         }
 
 

@@ -2,7 +2,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace JW.Alarm.Services.Media
+namespace JW.Alarm.Services
 {
     /// <summary>
     /// Download service

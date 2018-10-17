@@ -9,9 +9,4 @@ namespace JW.Alarm.Models
         Bible
     }
 
-    public enum PlayItem
-    {
-        Music,
-        Bible
-    }
 }

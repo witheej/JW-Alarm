@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace JW.Alarm.Services.Media
+namespace JW.Alarm.Services
 {
     public class MediaLookUpService
     {

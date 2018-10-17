@@ -1,28 +1,17 @@
 ﻿using Autofac;
+using JW.Alarm.Core.UWP.ViewModels;
 using JW.Alarm.Models;
 using JW.Alarm.Services.Contracts;
-using JW.Alarm.Services.Scheduler;
 using JW.Alarm.Services.Uwp.Helpers;
 using JW.Alarm.Services.Uwp.Tasks;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.ApplicationModel.Background;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Notifications;
-using Windows.UI.Notifications.Management;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace JW.Alarm.Core.Uwp
@@ -49,6 +38,11 @@ namespace JW.Alarm.Core.Uwp
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(200, 300));
+
+            ApplicationView.PreferredLaunchViewSize = new Size(250, 400);
+            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Auto;
+
             if (e.PreviousExecutionState == ApplicationExecutionState.NotRunning ||
                 e.PreviousExecutionState == ApplicationExecutionState.Terminated ||
                 e.PreviousExecutionState == ApplicationExecutionState.ClosedByUser)
@@ -56,21 +50,7 @@ namespace JW.Alarm.Core.Uwp
                 IocSetup.Initialize();
                 BootstrapHelper.VerifyBackgroundTasks();
                 Task.Run(async () => await BootstrapHelper.VerifyMediaLookUpService());
-
-                Task.Run(async () =>
-                {
-                    using (var scope = IocSetup.Container.BeginLifetimeScope())
-                    {
-                        var alarmService = scope.Resolve<IAlarmService>();
-                        await alarmService.Create(new AlarmSchedule()
-                        {
-                            DaysOfWeek = new DayOfWeek[] { DayOfWeek.Sunday },
-                            Hour = 1,
-                            Minute = 32
-                        });
-                    }
-                  
-                });
+                IocSetup.Container.Resolve<MainViewModel>();
             }
 
             var rootFrame = Window.Current.Content as Frame;
@@ -111,18 +91,15 @@ namespace JW.Alarm.Core.Uwp
         {
             base.OnBackgroundActivated(args);
 
-            using (var scope = IocSetup.Container.BeginLifetimeScope())
+            switch (args.TaskInstance.Task.Name)
             {
-                switch (args.TaskInstance.Task.Name)
-                {
-                    case "AlarmTask":
-                        scope.Resolve<AlarmTask>().Handle(args.TaskInstance);
-                        break;
+                case "AlarmTask":
+                    IocSetup.Container.Resolve<AlarmTask>().Handle(args.TaskInstance);
+                    break;
 
-                    case "SchedulerTask":
-                        scope.Resolve<SchedulerTask>().Handle(args.TaskInstance);
-                        break;
-                }
+                case "SchedulerTask":
+                    IocSetup.Container.Resolve<SchedulerTask>().Handle(args.TaskInstance);
+                    break;
             }
         }
 

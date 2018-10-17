@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using JW.Alarm.Services.Media;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,11 +40,8 @@ namespace JW.Alarm.Services.Uwp.Helpers
 
         public async static Task VerifyMediaLookUpService()
         {
-            using (var scope = Uwp.IocSetup.Container.BeginLifetimeScope())
-            {
-                var service = scope.Resolve<MediaLookUpService>();
-                await service.Verify();  
-            }
+            var service = IocSetup.Container.Resolve<MediaLookUpService>();
+            await service.Verify();
         }
 
         public static void VerifyBackgroundTasks()

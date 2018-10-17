@@ -1,5 +1,4 @@
 ﻿using JW.Alarm.Models;
-using JW.Alarm.Models.Media;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,10 +8,10 @@ namespace JW.Alarm.Services.Contracts
 {
     public interface IMediaPlayService
     {
-        Task Play(int alarmId);
-        Task Stop(AlarmSchedule alarmSchedule);
-        Task SetNextItemToPlay(int alarmId);
-        Task UpdatePlayedSeconds(AlarmSchedule alarm, int second);
-        Task<CurrentlyPlaying> NextUrlToPlay(int alarmId);
+        Task Play(int scheduleId);
+        Task Stop(AlarmSchedule schedule);
+        Task SetNextItemToPlay(int scheduleId);
+        Task UpdatePlayedSeconds(AlarmSchedule schedule, int second);
+        Task<CurrentlyPlaying> NextUrlToPlay(int scheduleId);
     }
 }

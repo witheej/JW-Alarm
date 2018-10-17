@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace JW.Alarm.Services.Media
+namespace JW.Alarm.Services
 {
     public class MediaService : IMediaService
     {

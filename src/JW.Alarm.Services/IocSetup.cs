@@ -1,7 +1,6 @@
 ﻿namespace JW.Alarm.Services
 {
     using Autofac;
-    using Media;
 
     public static class IocSetup
     {

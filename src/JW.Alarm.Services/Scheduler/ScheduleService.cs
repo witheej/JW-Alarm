@@ -6,38 +6,38 @@ using JW.Alarm.Models;
 using System.IO;
 using Newtonsoft.Json;
 
-namespace JW.Alarm.Services.Scheduler
+namespace JW.Alarm.Services
 {
-    public abstract class AlarmService : IAlarmService
+    public abstract class ScheduleService : IScheduleService
     {
         private Random random = new Random();
         private IStorageService storageService;
         private Lazy<string> scheduleFilePath;
-        private Dictionary<int, AlarmSchedule> schedules;
+        private static Dictionary<int, AlarmSchedule> schedules;
 
         public Task<Dictionary<int, AlarmSchedule>> Schedules => getSchedules();
 
-        public AlarmService(IStorageService storageService)
+        public ScheduleService(IStorageService storageService)
         {
             this.storageService = storageService;
             scheduleFilePath = new Lazy<string>(() => Path.Combine(this.storageService.StorageRoot, "schedules.json"));
         }
 
-        public virtual async Task Create(AlarmSchedule alarm)
+        public virtual async Task Create(AlarmSchedule schedule)
         {
             await getSchedules();
 
-            alarm.Id = getNextId();
-            schedules.Add(alarm.Id, alarm);
+            schedule.Id = getNextId();
+            schedules.Add(schedule.Id, schedule);
 
             await saveChanges();
         }
 
-        public virtual async Task Delete(int alarmId)
+        public virtual async Task Delete(int scheduleId)
         {
             await getSchedules();
 
-            schedules.Remove(alarmId);
+            schedules.Remove(scheduleId);
 
             await saveChanges();
         }
