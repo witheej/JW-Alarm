@@ -12,7 +12,7 @@ namespace JW.Alarm.Core.UWP.Views.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var isEnabled = value.ToString() == (parameter as string);
+            var isEnabled = (value as DayOfWeek[]).Contains((DayOfWeek)parameter);
 
             return isEnabled ? Color.Black : Color.Gray;
         }

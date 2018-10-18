@@ -11,9 +11,10 @@ namespace JW.Alarm.Core.UWP.Views.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
+
             bool isEnabled = (bool)value;
-            return isEnabled ? (object)"ms-appdata:///Mobile.Clock.UI.UWP/Assets/clock_active.png"
-                : (object)"ms-appdata:///Mobile.Clock.UI.UWP/Assets/in_active.png";
+            return isEnabled ? (object)"/Assets/Icons/clock_active.png"
+                : (object)"/Assets/Icons/clock_inactive.png";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
