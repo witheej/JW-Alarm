@@ -2,6 +2,7 @@
 using JW.Alarm.Services.Contracts;
 using System;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace JW.Alarm.ViewModels
 {
@@ -13,6 +14,18 @@ namespace JW.Alarm.ViewModels
         {
             this.scheduleService = scheduleService;
             Model = model ?? new AlarmSchedule();
+
+            EnableCommand = new RelayCommandAsync<object>(async (x) =>
+            {
+                IsEnabled = true;
+                await SaveAsync();
+            });
+
+            DisableCommand = new RelayCommandAsync<object>(async (x) =>
+            {
+                IsEnabled = false;
+                await SaveAsync();
+            });
         }
 
         private AlarmSchedule model;
@@ -30,14 +43,14 @@ namespace JW.Alarm.ViewModels
             }
         }
 
-        public string Description
+        public string Name
         {
-            get => Model.Description;
+            get => Model.Name;
             set
             {
-                if (value != Model.Description)
+                if (value != Model.Name)
                 {
-                    Model.Description = value;
+                    Model.Name = value;
                     IsModified = true;
                     OnPropertyChanged();
                 }
@@ -57,7 +70,6 @@ namespace JW.Alarm.ViewModels
                 }
             }
         }
-
 
         public DayOfWeek[] DaysOfWeek
         {
@@ -101,7 +113,11 @@ namespace JW.Alarm.ViewModels
             }
         }
 
-  
+        public Meridien Meridien
+        {
+            get => Model.Meridien;
+        }
+
         public AlarmMusic Music
         {
             get => Model.Music;
@@ -130,7 +146,7 @@ namespace JW.Alarm.ViewModels
             }
         }
 
-  
+
         public bool IsModified { get; set; }
 
         private bool isLoading;
@@ -147,9 +163,12 @@ namespace JW.Alarm.ViewModels
             set => Set(ref isNewSchedule, value);
         }
 
+        public ICommand DisableCommand { get; private set; }
+        public ICommand EnableCommand { get; private set; }
+
         public async Task SaveAsync()
         {
-           
+
             IsModified = false;
             if (IsNewSchedule)
             {
@@ -170,7 +189,7 @@ namespace JW.Alarm.ViewModels
 
         }
 
-        
+
         public async Task RevertChangesAsync()
         {
             if (IsModified)

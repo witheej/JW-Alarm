@@ -79,7 +79,7 @@ namespace JW.Alarm.Services.Uwp
                             },
                             new AdaptiveText()
                             {
-                                Text = alarm.Description
+                                Text = alarm.Name
                             }
                         }
                     }
