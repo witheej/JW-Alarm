@@ -14,7 +14,14 @@ namespace JW.Alarm.Models
 
         public bool IsEnabled { get; set; } = true;
 
-        public DayOfWeek[] DaysOfWeek { get; set; }
+        public DayOfWeek[] DaysOfWeek { get; set; } = new DayOfWeek[] {
+            DayOfWeek.Sunday,
+            DayOfWeek.Monday,
+            DayOfWeek.Tuesday,
+            DayOfWeek.Wednesday,
+            DayOfWeek.Thursday,
+            DayOfWeek.Friday,
+            DayOfWeek.Saturday };
 
         //24 hour based
         public int Hour { get; set; }
@@ -23,7 +30,12 @@ namespace JW.Alarm.Models
 
         public Meridien Meridien => Hour < 12 ? Meridien.AM : Meridien.PM;
 
+        public bool MusicEnabled { get; set; } = true;
+
         public AlarmMusic Music { get; set; }
+
+        public bool BibleEnabled { get; set; } = true;
+
         public BibleAudio Bible { get; set; }
 
         public string Key { get; set; }
@@ -33,6 +45,27 @@ namespace JW.Alarm.Models
         public string CronExpression => getCronExpression();
 
         public PlayType CurrentPlayItem { get; set; }
+
+        public AlarmSchedule()
+        {
+            //Song number 15 from old song book (Sing Praises to Jehovah! - 1984) as default hymn.
+            //"Life without end at last!" is the song theme.
+            Music = new MelodyMusic()
+            {
+                DiskCode = "iam-6",
+                TrackNumber = 12
+            };
+
+            //Isaiah chapter 1 of English NWT 2013 as default chapter of Bible.
+            Bible = new BibleAudio()
+            {
+                LanguageCode = "E",
+                VersionCode = "NWT",
+                BookNumber = 23,
+                ChapterNumber = 1
+            };
+
+        }
 
         public DateTimeOffset NextFireDate()
         {

@@ -11,13 +11,13 @@
         internal static IContainer Container;
         public static void Initialize(ContainerBuilder containerBuilder)
         {
-            containerBuilder.RegisterType<UwpScheduleService>().As<IScheduleService>();
+            containerBuilder.RegisterType<UwpScheduleService>().As<IScheduleService>().SingleInstance();
+
             containerBuilder.RegisterType<UwpStorageService>().As<IStorageService>();
             containerBuilder.RegisterType<UwpThreadService>().As<IThreadService>();
             containerBuilder.RegisterType<AlarmTask>();
             containerBuilder.RegisterType<SchedulerTask>();
             containerBuilder.RegisterType<HttpClientHandler>();
-            containerBuilder.RegisterType<UwpStorageService>().As<IStorageService>();
             containerBuilder.RegisterType<UwpPopUpService>().As<IPopUpService>();
         }
 

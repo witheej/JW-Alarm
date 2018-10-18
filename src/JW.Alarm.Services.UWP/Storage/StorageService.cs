@@ -28,7 +28,7 @@ namespace JW.Alarm.Services.Uwp
 
             var directory = await StorageFolder.GetFolderFromPathAsync(directoryPath);
 
-            return await directory.TryGetItemAsync(fileName) != null;
+            return await directory.TryGetItemAsync(fileName) != null; ;
         }
 
         public async Task<bool> DirectoryExists(string path)

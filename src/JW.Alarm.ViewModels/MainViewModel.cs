@@ -18,8 +18,6 @@ namespace JW.Alarm.ViewModels
         {
             this.scheduleService = scheduleService;
             this.threadService = threadService;
-
-            Task.Run(GetScheduleListAsync);
         }
 
         public ObservableCollection<ScheduleViewModel> Schedules { get; }
