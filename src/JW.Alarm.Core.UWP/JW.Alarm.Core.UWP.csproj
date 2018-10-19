@@ -96,12 +96,17 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="IocSetup.cs" />
+    <Compile Include="Views\Converters\BoolVisibilityConverter.cs" />
+    <Compile Include="Views\Converters\DayColorConverter.cs" />
     <Compile Include="Views\Extensions\VisualTreeExtensions.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\Converters\DayColorConverter.cs" />
+    <Compile Include="Views\Converters\IsEnabledColorConverter.cs" />
+    <Compile Include="Views\Schedule\ScheduleList.xaml.cs">
+      <DependentUpon>ScheduleList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Schedule\ScheduleView.xaml.cs">
       <DependentUpon>ScheduleView.xaml</DependentUpon>
     </Compile>
@@ -133,6 +138,10 @@
     <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Schedule\ScheduleList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Schedule\ScheduleView.xaml">
       <SubType>Designer</SubType>

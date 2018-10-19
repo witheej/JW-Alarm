@@ -30,7 +30,11 @@ namespace JW.Alarm.Services.Uwp
         public override async Task Update(AlarmSchedule schedule)
         {
             removeNotification(schedule.Id.ToString());
-            createNotification(schedule);
+
+            if(schedule.IsEnabled)
+            {
+                createNotification(schedule);
+            }
 
             await base.Update(schedule);
         }
@@ -96,7 +100,7 @@ namespace JW.Alarm.Services.Uwp
 
             return new ScheduledToastNotification(content.GetXml(), alarmTime)
             {
-                Group = "sample",
+                Group = "alarms",
                 Tag = alarm.Id.ToString(),
                 RemoteId = remoteId
             };

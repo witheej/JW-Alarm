@@ -9,13 +9,11 @@ using Windows.UI.Xaml.Media;
 
 namespace JW.Alarm.Core.UWP.Views.Converters
 {
-    public class DayColorConverter : IValueConverter
+    public class IsEnabledColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var isEnabled = (value as HashSet<DayOfWeek>).Contains((DayOfWeek)parameter);
-
-            return isEnabled ? new SolidColorBrush(Colors.Black) : new SolidColorBrush(Colors.Gray);
+            return bool.Parse(value.ToString()) ? new SolidColorBrush(Colors.Black) : new SolidColorBrush(Colors.Gray);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

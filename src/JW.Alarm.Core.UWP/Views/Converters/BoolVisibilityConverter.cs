@@ -3,24 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.UI;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Media;
 
 namespace JW.Alarm.Core.UWP.Views.Converters
 {
-    public class DayColorConverter : IValueConverter
+    public class BoolVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var isEnabled = (value as HashSet<DayOfWeek>).Contains((DayOfWeek)parameter);
-
-            return isEnabled ? new SolidColorBrush(Colors.Black) : new SolidColorBrush(Colors.Gray);
+            if (value is Boolean && (bool)value)
+            {
+                return Visibility.Visible;
+            }
+            return Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            throw new NotImplementedException();
+            if (value is Visibility && (Visibility)value == Visibility.Visible)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

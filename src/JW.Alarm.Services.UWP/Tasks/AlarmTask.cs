@@ -14,13 +14,11 @@ namespace JW.Alarm.Services.Uwp.Tasks
 {
     public class AlarmTask
     {
-        private IScheduleService alarmService;
-        private MediaLookUpService mediaLookUpService;
+        private MediaPlayService mediaPlayService;
 
-        public AlarmTask(IScheduleService alarmService, MediaLookUpService mediaLookUpService)
+        public AlarmTask(MediaPlayService mediaPlayService)
         {
-            this.alarmService = alarmService;
-            this.mediaLookUpService = mediaLookUpService;
+            this.mediaPlayService = mediaPlayService;
         }
 
         public async void Handle(IBackgroundTaskInstance backgroundTask)
@@ -31,13 +29,15 @@ namespace JW.Alarm.Services.Uwp.Tasks
 
             if (details.ChangeType == ToastHistoryChangedType.Added)
             {
-                await mediaLookUpService.Verify();
-
                 var history = ToastNotificationManager.History.GetHistory();
 
-                foreach (var item in history)
+                foreach (var toast in history)
                 {
-
+                    if(int.TryParse(toast.Tag, out var id))
+                    {
+                        await mediaPlayService.Play(id);
+                        break;
+                    }
                 }
            }
 

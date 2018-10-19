@@ -1,8 +1,10 @@
 ﻿using JW.Alarm.Models;
 using JW.Alarm.Services.Contracts;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Autofac;
 
 namespace JW.Alarm.ViewModels
 {
@@ -10,21 +12,21 @@ namespace JW.Alarm.ViewModels
     public class ScheduleViewModel : BindableBase
     {
         IScheduleService scheduleService;
-        public ScheduleViewModel(IScheduleService scheduleService, AlarmSchedule model = null)
+        IPopUpService popUpService;
+
+        public ScheduleViewModel(AlarmSchedule model = null)
         {
-            this.scheduleService = scheduleService;
+            this.scheduleService = IocSetup.Container.Resolve<IScheduleService>();
+            this.popUpService = IocSetup.Container.Resolve<IPopUpService>();
+
+            isNewSchedule = model == null ? true : false;
             Model = model ?? new AlarmSchedule();
 
             EnableCommand = new RelayCommandAsync<object>(async (x) =>
             {
-                IsEnabled = true;
+                IsEnabled = bool.Parse(x.ToString());
                 await SaveAsync();
-            });
 
-            DisableCommand = new RelayCommandAsync<object>(async (x) =>
-            {
-                IsEnabled = false;
-                await SaveAsync();
             });
         }
 
@@ -71,46 +73,34 @@ namespace JW.Alarm.ViewModels
             }
         }
 
-        public DayOfWeek[] DaysOfWeek
+        public HashSet<DayOfWeek> DaysOfWeek
         {
             get => Model.DaysOfWeek;
+        }
+
+        public TimeSpan Time
+        {
+            get => new TimeSpan(Model.Hour, Model.Minute, 0);
             set
             {
-                if (value != Model.DaysOfWeek)
+                if (value.Hours != Model.Hour || value.Minutes != Model.Minute)
                 {
-                    Model.DaysOfWeek = value;
+                    Model.Hour = value.Hours;
+                    Model.Minute = value.Minutes;
                     IsModified = true;
                     OnPropertyChanged();
                 }
             }
         }
 
-        public int Hour
+        public string Hour
         {
-            get => Model.Hour;
-            set
-            {
-                if (value != Model.Hour)
-                {
-                    Model.Hour = value;
-                    IsModified = true;
-                    OnPropertyChanged();
-                }
-            }
+            get => (Model.Hour % 12).ToString("D2");
         }
 
-        public int Minute
+        public string Minute
         {
-            get => Model.Minute;
-            set
-            {
-                if (value != Model.Minute)
-                {
-                    Model.Minute = value;
-                    IsModified = true;
-                    OnPropertyChanged();
-                }
-            }
+            get => Model.Minute.ToString("D2");
         }
 
         public Meridien Meridien
@@ -157,28 +147,25 @@ namespace JW.Alarm.ViewModels
         }
 
         private bool isNewSchedule;
-        public bool IsNewSchedule
-        {
-            get => isNewSchedule;
-            set => Set(ref isNewSchedule, value);
-        }
+        public bool IsNewSchedule => isNewSchedule;
 
-        public ICommand DisableCommand { get; private set; }
+        public bool IsExistingSchedule => !isNewSchedule;
+
         public ICommand EnableCommand { get; private set; }
 
-        public async Task SaveAsync()
+        public void Toggle(DayOfWeek day)
         {
-
-            IsModified = false;
-            if (IsNewSchedule)
+            if (DaysOfWeek.Contains(day))
             {
-                IsNewSchedule = false;
-                await scheduleService.Create(Model);
+                DaysOfWeek.Remove(day);
             }
-
-            await scheduleService.Update(Model);
+            else
+            {
+                DaysOfWeek.Add(day);
+            }
+            IsModified = true;
+            OnPropertyChanged("DaysOfWeek");
         }
-
 
         public async Task CancelAsync()
         {
@@ -186,9 +173,63 @@ namespace JW.Alarm.ViewModels
             {
                 await RevertChangesAsync();
             }
-
         }
 
+        public async Task<bool> SaveAsync()
+        {
+            if(!IsModified)
+            {
+                return true;
+            }
+
+            if (!await validate())
+            {
+                return false;
+            }
+
+           
+            if (isNewSchedule)
+            {
+                isNewSchedule = false;
+                await scheduleService.Create(Model);
+            }
+            else
+            {
+                await scheduleService.Update(Model);
+            }
+
+            IsModified = false;
+
+            var nextFire = Model.NextFireDate();
+            var timeSpan = nextFire - DateTimeOffset.Now;
+
+            if (IsEnabled)
+            {
+                await popUpService.ShowMessage($"Alarm set for {timeSpan.Hours} hours and {timeSpan.Minutes} minutes from now.");
+            }
+
+            
+            return true;
+        }
+
+        private async Task<bool> validate()
+        {
+            if (DaysOfWeek.Count == 0)
+            {
+                await popUpService.ShowMessage("Please select day(s) of Week.");
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task DeleteAsync()
+        {
+            if (Model.Id >= 0)
+            {
+                await scheduleService.Delete(Model.Id);
+            }
+        }
 
         public async Task RevertChangesAsync()
         {

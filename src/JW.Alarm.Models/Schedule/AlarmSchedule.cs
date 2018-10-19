@@ -14,14 +14,14 @@ namespace JW.Alarm.Models
 
         public bool IsEnabled { get; set; } = true;
 
-        public DayOfWeek[] DaysOfWeek { get; set; } = new DayOfWeek[] {
+        public HashSet<DayOfWeek> DaysOfWeek { get; set; } = new HashSet<DayOfWeek>(new DayOfWeek[] {
             DayOfWeek.Sunday,
             DayOfWeek.Monday,
             DayOfWeek.Tuesday,
             DayOfWeek.Wednesday,
             DayOfWeek.Thursday,
             DayOfWeek.Friday,
-            DayOfWeek.Saturday };
+            DayOfWeek.Saturday });
 
         //24 hour based
         public int Hour { get; set; }
@@ -80,11 +80,18 @@ namespace JW.Alarm.Models
 
         private string getCronExpression()
         {
-            string cronExpression = $"0 {Minute} {Hour} ? * {(int)DaysOfWeek[0] + 1}";
+            string cronExpression = $"0 {Minute} {Hour} ? * ";
 
-            for (int i = 1; i < DaysOfWeek.Length; i++)
+            if (DaysOfWeek.Contains(DayOfWeek.Sunday))
             {
-                cronExpression = cronExpression + "," + ((int)DaysOfWeek[i] + 1);
+                cronExpression += "1";
+            }
+            for (int i = 1; i < 7; i++)
+            {
+                if (DaysOfWeek.Contains((DayOfWeek)i))
+                {
+                    cronExpression += "," + (i + 1).ToString();
+                }
             }
 
             var expression = new CronExpression(cronExpression);
@@ -104,7 +111,7 @@ namespace JW.Alarm.Models
                 throw new Exception("Invalid minute.");
             }
 
-            if (DaysOfWeek == null || DaysOfWeek.Length == 0)
+            if (DaysOfWeek == null || DaysOfWeek.Count == 0)
             {
                 throw new Exception("DaysOfWeek is empty.");
             }

@@ -55,7 +55,7 @@ namespace JW.Alarm.ViewModels
                 Schedules.Clear();
                 foreach (var schedule in schedules)
                 {
-                    Schedules.Add(new ScheduleViewModel(scheduleService, schedule.Value));
+                    Schedules.Add(new ScheduleViewModel(schedule.Value));
                 }
                 IsLoading = false;
             });
