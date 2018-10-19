@@ -26,7 +26,7 @@ namespace AudioLinkHarvester
             var tasks = new List<Task>();
 
             //Bible
-            tasks.Add(Harvest_NWT_Links());
+            tasks.Add(Harvest_Bible_Links());
 
             // Music
             tasks.Add(Harvest_SingToJehovah_Vocal_Links());
@@ -59,14 +59,14 @@ namespace AudioLinkHarvester
             }
 
             ZipFile.CreateFromDirectory("../../media", zipIndex);
-            Directory.Delete("../../media", true);
+            // Directory.Delete("../../media", true);
         }
 
-        private async static Task Harvest_NWT_Links()
+        private async static Task Harvest_Bible_Links()
         {
             var tasks = new List<Task>();
 
-            var languageEditions = new Dictionary<string, List<string>>();
+            var languageEditionsMapping = new Dictionary<string, List<string>>();
             var languageCodes = new Dictionary<string, string>();
 
             foreach (var edition in bibleCodes)
@@ -94,13 +94,13 @@ namespace AudioLinkHarvester
 
                     if (result)
                     {
-                        if (languageEditions.ContainsKey(languageCode))
+                        if (languageEditionsMapping.ContainsKey(languageCode))
                         {
-                            languageEditions[languageCode].Add(edition.Key);
+                            languageEditionsMapping[languageCode].Add(edition.Key);
                         }
                         else
                         {
-                            languageEditions[languageCode] = new List<string>(new[] { edition.Key });
+                            languageEditionsMapping[languageCode] = new List<string>(new[] { edition.Key });
                         }
                     }
                 }
@@ -112,22 +112,22 @@ namespace AudioLinkHarvester
                 Directory.CreateDirectory($"../../media/Audio/Bible");
             }
 
-            File.WriteAllText($"../../media/Audio/Bible/index.json", JsonConvert.SerializeObject(
-                languageEditions.Select(x => new
+            File.WriteAllText($"../../media/Audio/Bible/languages.json", JsonConvert.SerializeObject(
+                languageEditionsMapping.Select(x => new
                 {
                     Key = x.Key,
                     Value = languageCodes[x.Key]
                 }).ToList()));
 
-            foreach (var edition in languageEditions)
+            foreach (var languageEditionsMap in languageEditionsMapping)
             {
-                if (!Directory.Exists($"../../media/Audio/Bible/{edition.Key}"))
+                if (!Directory.Exists($"../../media/Audio/Bible/{languageEditionsMap.Key}"))
                 {
-                    Directory.CreateDirectory($"../media/Audio/Bible/{edition.Key}");
+                    Directory.CreateDirectory($"../media/Audio/Bible/{languageEditionsMap.Key}");
                 }
 
-                File.WriteAllText($"../../media/Audio/Bible/{edition.Key}/index.json", JsonConvert.SerializeObject(
-                edition.Value.Select(x => new
+                File.WriteAllText($"../../media/Audio/Bible/{languageEditionsMap.Key}/editions.json", JsonConvert.SerializeObject(
+                languageEditionsMap.Value.Select(x => new
                 {
                     Key = x,
                     Value = bibleCodes[x]
@@ -146,7 +146,7 @@ namespace AudioLinkHarvester
 
             for (int i = 1; i <= 6; i++)
             {
-                var currentDisc = string.Format("Sing to Jehovah - Disc {0}", i);
+                var currentDisc = string.Format("Disc {0}", i);
                 var currentDiscCode = $"iasnv{i}";
                 discCodes.Add(currentDiscCode, currentDisc);
 
@@ -162,7 +162,7 @@ namespace AudioLinkHarvester
 
                     languageCodes[languageCode] = language;
 
-                    await MusicHarverster.HarvestMusicLinks(currentDiscCode, languageCode);
+                    await MusicHarverster.HarvestMusicLinks("iasnv", currentDiscCode, languageCode);
 
                     if (languageDiscs.ContainsKey(languageCode))
                     {
@@ -176,12 +176,16 @@ namespace AudioLinkHarvester
                 }
             }
 
-            if (!Directory.Exists($"../../media/Music/Vocals"))
+            if (!Directory.Exists($"../../media/Music/Vocals/iasnv"))
             {
-                Directory.CreateDirectory($"../../media/music/Vocals");
+                Directory.CreateDirectory($"../../media/music/Vocals/iasnv");
             }
 
             File.WriteAllText($"../../media/Music/Vocals/index.json", JsonConvert.SerializeObject(
+             new [] { new { Key = "iasnv", Value = "Sing to Jehovah (2009)" } }));
+
+
+            File.WriteAllText($"../../media/Music/Vocals/iasnv/index.json", JsonConvert.SerializeObject(
             languageDiscs.Select(x => new
             {
                 Key = x.Key,
@@ -190,12 +194,12 @@ namespace AudioLinkHarvester
 
             foreach (var discs in languageDiscs)
             {
-                if (!Directory.Exists($"../../media/Music/Vocals/{discs.Key}"))
+                if (!Directory.Exists($"../../media/Music/Vocals/iasnv/{discs.Key}"))
                 {
-                    Directory.CreateDirectory($"../../media/Music/Vocals/{discs.Key}");
+                    Directory.CreateDirectory($"../../media/Music/Vocals/iasnv/{discs.Key}");
                 }
 
-                File.WriteAllText($"../../media/Music/Vocals/{discs.Key}/index.json", JsonConvert.SerializeObject(
+                File.WriteAllText($"../../media/Music/Vocals/iasnv/{discs.Key}/index.json", JsonConvert.SerializeObject(
                  discs.Value.Select(x => new
                  {
                      Key = x,
@@ -220,15 +224,18 @@ namespace AudioLinkHarvester
 
                 discs.Add(currentDiscCode);
 
-                await MusicHarverster.HarvestMusicLinks(currentDiscCode);
+                await MusicHarverster.HarvestMusicLinks("iam", currentDiscCode);
             }
 
-            if (!Directory.Exists($"../../media/Music/Melodies"))
+            if (!Directory.Exists($"../../media/Music/Melodies/iam"))
             {
-                Directory.CreateDirectory($"../../media/Music/Melodies");
+                Directory.CreateDirectory($"../../media/Music/Melodies/iam");
             }
 
             File.WriteAllText($"../../media/Music/Melodies/index.json", JsonConvert.SerializeObject(
+            new[] { new { Key = "iam", Value = "Sing Praises to Jehovah (1984)" } }));
+
+            File.WriteAllText($"../../media/Music/Melodies/iam/index.json", JsonConvert.SerializeObject(
             discs.Select(x => new
             {
                 Key = x,

@@ -59,10 +59,11 @@ namespace JW.Alarm.Services
                 {
                     schedules = JsonConvert.DeserializeObject<Dictionary<int, AlarmSchedule>>(await storageService.ReadFile(scheduleFilePath.Value));
                 }
-                else
+                
+                if(schedules == null)
                 {
                     schedules = new Dictionary<int, AlarmSchedule>();
-                }  
+                }
             }
 
             return schedules;

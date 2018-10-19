@@ -7,6 +7,6 @@ namespace JW.Alarm.Services.Contracts
 {
     public interface IPopUpService
     {
-        Task ShowMessage(string message);
+        Task ShowMessage(string message, int seconds = 3);
     }
 }

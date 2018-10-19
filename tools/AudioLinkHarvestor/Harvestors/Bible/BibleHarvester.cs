@@ -10,7 +10,7 @@ namespace AudioLinkHarvester.Bible
 {
     internal class BibleHarvester
     {
-        internal static async Task<bool> HarvestBibleLinks( string languageCode, string editionCode)
+        internal static async Task<bool> HarvestBibleLinks(string languageCode, string editionCode)
         {
             var dir = $"../../media/Audio/Bible/{languageCode}/{editionCode}";
             var file = $"{dir}/index.json";

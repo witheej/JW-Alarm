@@ -8,10 +8,10 @@ namespace AudioLinkHarvester.Audio
 {
     internal class MusicHarverster
     {
-        internal static async Task<bool> HarvestMusicLinks(string musicDiscCode, string languageCode = null)
+        internal static async Task<bool> HarvestMusicLinks(string songBookCode, string musicDiscCode, string languageCode = null)
         {
-            var dir = languageCode == null ? $"../../media/Music/Melodies/{musicDiscCode}" :
-                                             $"../../media/Music/Vocals/{languageCode}/{musicDiscCode}";
+            var dir = languageCode == null ? $"../../media/Music/Melodies/{songBookCode}/{musicDiscCode}" :
+                                             $"../../media/Music/Vocals/{songBookCode}/{languageCode}/{musicDiscCode}";
             var file = $"{dir}/index.json";
 
             if(File.Exists(file))
@@ -38,9 +38,10 @@ namespace AudioLinkHarvester.Audio
             var musicFiles = model.files[languageCode ?? "E"].MP3;
             foreach (var musicFile in musicFiles)
             {
-                if (musicFile.track == 0) continue;
+                if (musicFile.track == 0)
+                    continue;
 
-                musicDisc.Tracks.Add(new MusicTrack()
+                musicDisc.Tracks.Add(int.Parse(musicFile.track as string), new MusicTrack()
                 {
                     Title = musicFile.title,
                     Url = musicFile.file.url

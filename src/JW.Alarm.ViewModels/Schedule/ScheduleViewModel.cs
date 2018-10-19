@@ -177,7 +177,7 @@ namespace JW.Alarm.ViewModels
 
         public async Task<bool> SaveAsync()
         {
-            if(!IsModified)
+            if(IsExistingSchedule && !IsModified)
             {
                 return true;
             }
