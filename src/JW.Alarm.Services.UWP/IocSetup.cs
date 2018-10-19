@@ -19,6 +19,7 @@
             containerBuilder.RegisterType<SchedulerTask>();
             containerBuilder.RegisterType<HttpClientHandler>();
             containerBuilder.RegisterType<UwpPopUpService>().As<IPopUpService>();
+            containerBuilder.RegisterType<UwpMediaPlayService>().As<MediaPlayService>();
         }
 
         public static void SetContainer(IContainer iocContainer)

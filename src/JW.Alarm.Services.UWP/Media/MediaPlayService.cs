@@ -15,7 +15,7 @@ namespace JW.Alarm.Services.UWP
         private Dictionary<int, MediaPlayer> alarmToMediaPlayersMap = new Dictionary<int, MediaPlayer>();
         private Dictionary<MediaPlayer, int> mediaPlayersToAlarmMap = new Dictionary<MediaPlayer, int>();
 
-        public UwpMediaPlayService(IScheduleService scheduleService, IMediaService mediaService)
+        public UwpMediaPlayService(IScheduleService scheduleService, MediaService mediaService)
             : base(scheduleService, mediaService)
         {
         }

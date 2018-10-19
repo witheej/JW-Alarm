@@ -1,4 +1,4 @@
-﻿namespace Models.AudioLinks
+﻿namespace JW.Alarm.Models
 {
     public class BibleChapter
     {

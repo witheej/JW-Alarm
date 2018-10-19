@@ -1,6 +1,7 @@
 ﻿namespace JW.Alarm.Services
 {
     using Autofac;
+    using JW.Alarm.Services.Contracts;
 
     public static class IocSetup
     {

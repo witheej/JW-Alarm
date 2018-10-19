@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using Advanced.Algorithms.DataStructures.Foundation;
 
 namespace JW.Alarm.Models
 {
@@ -10,13 +10,13 @@ namespace JW.Alarm.Models
 
         public int TotalChapters => Chapters.Count;
 
-        public List<BibleChapter> Chapters { get; set; }
+        public TreeDictionary<int, BibleChapter> Chapters { get; set; }
 
         public BibleBook()
         {
-            Chapters = new List<BibleChapter>();
+            Chapters = new TreeDictionary<int, BibleChapter>();
         }
     }
 
-    
+
 }

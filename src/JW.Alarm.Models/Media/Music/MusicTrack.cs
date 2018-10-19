@@ -1,8 +1,8 @@
 ﻿namespace JW.Alarm.Models
 {
-    public class BibleChapter
+    public class MusicTrack
     {
-        public int Chapter { get; set; }
+        public string Title { get; set; }
         public string Url { get; set; }
     }
 }

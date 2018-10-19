@@ -52,7 +52,7 @@ namespace JW.Alarm.Models
             //"Life without end at last!" is the song theme.
             Music = new MelodyMusic()
             {
-                DiskCode = "iam-6",
+                DiscCode = "iam-6",
                 TrackNumber = 12
             };
 

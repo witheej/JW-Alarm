@@ -14,7 +14,7 @@
             ViewModels.IocSetup.Initialize(containerBuilder);
 
             containerBuilder.RegisterType<MainViewModel>().SingleInstance();
-
+       
             var container = containerBuilder.Build();
             SetContainer(container);
         }
