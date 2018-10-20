@@ -108,7 +108,7 @@ namespace JW.Alarm.Models
 
             if (Hour < 0 || Hour >= 24)
             {
-                throw new Exception("Invalid minute.");
+                throw new Exception("Invalid hour.");
             }
 
             if (DaysOfWeek == null || DaysOfWeek.Count == 0)
