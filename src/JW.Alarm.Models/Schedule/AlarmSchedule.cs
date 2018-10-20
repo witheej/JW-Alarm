@@ -1,8 +1,7 @@
-
-
 using Quartz;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace JW.Alarm.Models
 {
@@ -80,21 +79,8 @@ namespace JW.Alarm.Models
 
         private string getCronExpression()
         {
-            string cronExpression = $"0 {Minute} {Hour} ? * ";
-
-            if (DaysOfWeek.Contains(DayOfWeek.Sunday))
-            {
-                cronExpression += "1";
-            }
-            for (int i = 1; i < 7; i++)
-            {
-                if (DaysOfWeek.Contains((DayOfWeek)i))
-                {
-                    cronExpression += "," + (i + 1).ToString();
-                }
-            }
-
-            var expression = new CronExpression(cronExpression);
+            string Days = string.Join(",", DaysOfWeek.Select(x => x + 1).OrderBy(x => x));
+            var expression = new CronExpression($"0 {Minute} {Hour} ? * {Days}");
             return expression.CronExpressionString;
         }
 
@@ -111,7 +97,7 @@ namespace JW.Alarm.Models
                 throw new Exception("Invalid hour.");
             }
 
-            if (DaysOfWeek == null || DaysOfWeek.Count == 0)
+            if (DaysOfWeek?.Count == 0)
             {
                 throw new Exception("DaysOfWeek is empty.");
             }
